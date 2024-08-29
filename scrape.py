@@ -9,6 +9,7 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:130.0) Gecko/20100101 Firefox/130.0'
 }
 
+# Function to get the content of the webpage
 def get_content(url):
     response = requests.get(url, headers=HEADERS)
     if response.status_code == 200:
@@ -17,9 +18,8 @@ def get_content(url):
         print(f"Failed to retrieve the webpage. Status code: {response.status_code}")
         return None
     
-data_list=[]
-
-def get_url(query,page=1):
+# Function to get the URL of the page
+def get_url(query,page=1,datalist=[]):
     while True:
         url=f'https://fitnessprogramer.com/exercise-primary-muscle/{query}/page/{page}/'
         # print(f"Scraping page {page} at URL: {url}")
@@ -29,10 +29,12 @@ def get_url(query,page=1):
         for gif in gifs:
             title = gif.find('img')['alt']
             src = gif.find('img')['src']
-
-            data_list.append({'title': title, 'src': src})
+            datalist.append({
+                'targetMuscle': query,
+                'title': title,
+                'src': src
+            })
             
-
         next_page = get_content(url).find('a', class_='next') 
         if next_page and 'href' in next_page.attrs:
             page += 1
@@ -40,15 +42,16 @@ def get_url(query,page=1):
             # print("No more pages to scrape.")
             break       
     
-data_list.clear() # clear the list before appending new data
+# List of target muscles on the website
+targetMuscles=['full-body','neck','trapezius','shoulders','chest','back','biceps','triceps','forearm','abs','calf','erector-spinae','leg','hips','cardio']
 
-def scrape(query):
-    
-    data=get_url(query)
-    data=pd.DataFrame(data_list)
+allData=[]
+for muscle in targetMuscles:
+    datalist=[]
+    get_url(muscle,1,datalist=datalist)
+    allData.extend(datalist)
 
-    print(data.head(10).to_string(index=False)) # for testing purposes
-    # data.to_csv(f'{query}_exercises.csv', index=False) # uncomment this line to save the data to a csv file
+df=pd.DataFrame(allData, columns=['targetMuscle','title','src'],index=None)
 
-
-# scrape('chest') # pass the muscle group you want to scrape
+# Save the data to a JSON file
+# df.to_json('data/gifs.json', orient='records') # uncomment this line to save the data to a JSON file

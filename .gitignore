@@ -113,3 +113,9 @@ cython_debug/
 
 # Poetry
 .poetry/
+
+# ipynb files
+*.ipynb
+
+# env folder
+env/

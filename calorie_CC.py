@@ -23,9 +23,9 @@ def male_calorie_calculator(weight, height, age, activity_level):
     calorie_message(calories)
 
 def calorie_message(calories):
-    maintenance = f"To keep rocking your current weight, aim for {round(calories)} calories a day! 🎯"
-    lose_weight = f"Ready to shed some pounds? Go for {round(calories) - 500} calories a day—you're on fire! 🔥"
-    gain_weight = f"Bulking up? Fuel up with {round(calories) + 500} calories daily—let's get those gains! 💪"
+    maintenance = f"To maintain your current weight: {round(calories)} calories/day"
+    lose_weight = f"To lose weight: {round(calories) - 500} calories/day"
+    gain_weight = f"To gain weight: {round(calories) + 500} calories/day"
 
     for message in [maintenance, lose_weight, gain_weight]:
         print(message)

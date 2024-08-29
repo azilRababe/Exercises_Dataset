@@ -42,7 +42,6 @@ def get_url(query,page=1,datalist=[]):
             # print("No more pages to scrape.")
             break       
     
-# List of target muscles on the website
 targetMuscles=['full-body','neck','trapezius','shoulders','chest','back','biceps','triceps','forearm','abs','calf','erector-spinae','leg','hips','cardio']
 
 allData=[]
@@ -54,4 +53,4 @@ for muscle in targetMuscles:
 df=pd.DataFrame(allData, columns=['targetMuscle','title','src'],index=None)
 
 # Save the data to a JSON file
-# df.to_json('data/gifs.json', orient='records') # uncomment this line to save the data to a JSON file
+df.to_json('data/gifs.json', orient='records') 

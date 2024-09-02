@@ -119,3 +119,4 @@ cython_debug/
 
 # env folder
 env/
+scraping_env/
